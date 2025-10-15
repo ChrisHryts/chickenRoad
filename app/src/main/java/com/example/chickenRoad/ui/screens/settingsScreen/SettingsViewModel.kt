@@ -3,8 +3,11 @@ package com.example.chickenRoad.ui.screens.settingsScreen
 import androidx.lifecycle.ViewModel
 import com.example.chickenRoad.helpers.SharedPreferencesManager
 import com.example.chickenRoad.helpers.BackgroundMusicController
+import com.example.chickenRoad.helpers.LegalType
 import com.example.chickenRoad.helpers.SoundController
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsViewModel(
@@ -17,6 +20,9 @@ class SettingsViewModel(
 
     private val _soundEnabled = MutableStateFlow(true)
     val soundEnabled = _soundEnabled.asStateFlow()
+
+    private val _legalType = MutableSharedFlow<LegalType>(replay = 0, extraBufferCapacity = 1)
+    val legalType: SharedFlow<LegalType> = _legalType
 
     init {
         val isMusicEnabled = sharedPreferencesManager.getMusicStatus()
@@ -40,5 +46,9 @@ class SettingsViewModel(
 
     fun onClick() {
         soundController.playClick()
+    }
+
+    fun setLegalType(type: LegalType) {
+        _legalType.tryEmit(type)
     }
 }

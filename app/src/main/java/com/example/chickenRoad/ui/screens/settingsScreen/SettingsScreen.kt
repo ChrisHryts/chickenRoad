@@ -20,22 +20,26 @@ import com.example.chickenRoad.R
 import com.example.chickenRoad.ui.components.Fog
 import org.koin.androidx.compose.koinViewModel
 import androidx.constraintlayout.compose.ChainStyle
+import com.example.chickenRoad.helpers.LegalType
 import com.example.chickenRoad.ui.components.Background
 import com.example.chickenRoad.ui.components.IconButton
 
 @Composable
-fun SettingsScreen(onPrivacy: () -> Unit, onTerms: () -> Unit, onBack: () -> Unit) {
+fun SettingsScreen(onLegal: (LegalType) -> Unit, onBack: () -> Unit) {
     val viewModel: SettingsViewModel = koinViewModel()
     val musicEnabled by viewModel.musicEnabled.collectAsStateWithLifecycle()
     val soundEnabled by viewModel.soundEnabled.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.legalType.collect { onLegal(it) }
+    }
 
     SettingsContent(
         musicEnabled = musicEnabled,
         setMusicEnabled = viewModel::setMusicEnabled,
         soundEnabled = soundEnabled,
         setSoundEnabled = viewModel::setSoundEnabled,
-        onPrivacy = onPrivacy,
-        onTerms = onTerms,
+        setLegalType = viewModel::setLegalType,
         onClick = viewModel::onClick,
         onBack = onBack
     )
@@ -48,8 +52,7 @@ fun SettingsContent(
     setMusicEnabled: (Boolean) -> Unit,
     soundEnabled: Boolean,
     setSoundEnabled: (Boolean) -> Unit,
-    onPrivacy: () -> Unit,
-    onTerms: () -> Unit,
+    setLegalType: (LegalType) -> Unit,
     onClick: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -149,7 +152,7 @@ fun SettingsContent(
                 }
                 .clickable(role = Role.Button, onClick = {
                     onClick()
-                    onPrivacy()
+                    setLegalType(LegalType.PRIVACY)
                 })
         )
 
@@ -166,7 +169,7 @@ fun SettingsContent(
                 }
                 .clickable(role = Role.Button, onClick = {
                     onClick()
-                    onTerms()
+                    setLegalType(LegalType.TERMS)
                 })
         )
     }

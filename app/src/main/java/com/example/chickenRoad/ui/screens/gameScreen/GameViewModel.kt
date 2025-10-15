@@ -40,7 +40,6 @@ class GameViewModel(
             if (it.gameId != token) it
             else it.copy(status = GameStatus.PLAYING, inputEnabled = true)
         }
-
         startTimer(token)
     }
 
@@ -109,8 +108,8 @@ class GameViewModel(
                 val state = _state.value
                 if (state.gameId != gameIdToken || state.status != GameStatus.PLAYING) break
 
-                val left = (state.timeLeftMs - tick).coerceAtLeast(0)
-                if (left == 0L) {
+                val timeLeft = (state.timeLeftMs - tick).coerceAtLeast(0)
+                if (timeLeft == 0L) {
                     _state.update {
                         if (it.gameId != gameIdToken) it
                         else it.copy(
@@ -122,7 +121,7 @@ class GameViewModel(
                     break
                 } else {
                     _state.update {
-                        if (it.gameId != gameIdToken) it else it.copy(timeLeftMs = left)
+                        if (it.gameId != gameIdToken) it else it.copy(timeLeftMs = timeLeft)
                     }
                 }
             }

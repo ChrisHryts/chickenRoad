@@ -24,7 +24,6 @@ data object RatingRoute
 data object SettingsRoute
 
 @Serializable
-data object PrivacyRoute
-
-@Serializable
-data object TermsRoute
+data class LegalRoute(
+    val type: LegalType
+)

@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import com.example.chickenRoad.helpers.BackgroundMusicController
+import com.example.chickenRoad.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     private val sharedPreferencesManager: com.example.chickenRoad.helpers.SharedPreferencesManager by inject()
@@ -24,7 +25,9 @@ class MainActivity : ComponentActivity() {
         musicController.start(R.raw.bg_sound)
 
         setContent {
-            AppNavigation()
+            AppTheme {
+                AppNavigation()
+            }
         }
     }
 
